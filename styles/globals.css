@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* LIGHT ERP THEME VARIABLES */
+    
+    /* Backgrounds */
+    --background: 210 40% 98%; /* Slate-50 #F8FAFC */
+    --foreground: 215 28% 17%; /* Gray-900 #111827 */
+
+    /* Cards / Surfaces */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 215 28% 17%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 28% 17%;
+
+    /* Brand Colors */
+    --primary: 231 77% 59%; /* Indigo-600 #4F46E5 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 161 72% 39%; /* Emerald-500 #10B981 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%; /* Gray-500 */
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%; /* Gray-200 */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 231 77% 59%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 222.2 47.4% 11.2%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+
+  .shape-blob {
+    @apply absolute blur-[50px] opacity-60 animate-float;
+  }
+
+  .card {
+    @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm rounded-xl overflow-hidden;
+  }
+  
+  .btn-primary {
+    @apply bg-primary hover:bg-indigo-700 text-white font-medium shadow-lg shadow-primary/20 transition-all duration-200 transform hover:-translate-y-0.5 px-4 py-2 rounded-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary hover:bg-emerald-600 text-white font-medium shadow-lg shadow-secondary/20 transition-all duration-200 transform hover:-translate-y-0.5 px-4 py-2 rounded-lg;
+  }
+  
+  .input-field {
+    @apply bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg transition-all px-4 py-2;
+  }
+}
+
+/* Status Badges */
+.badge-success {
+  @apply bg-emerald-100 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+.badge-error {
+  @apply bg-red-100 text-red-700 border border-red-200 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+.badge-warning {
+  @apply bg-amber-100 text-amber-700 border border-amber-200 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+.badge-info {
+  @apply bg-indigo-100 text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}

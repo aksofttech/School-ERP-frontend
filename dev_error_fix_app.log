@@ -1,0 +1,20 @@
+
+> school-erp-frontend@1.0.0 dev
+> next dev -p 3001 -p 3008
+
+  Γû▓ Next.js 14.2.35
+  - Local:        http://localhost:3008
+  - Environments: .env.local
+
+ Γ£ô Starting...
+[Error: EPERM: operation not permitted, open 'D:\ERP\frontend\.next\trace'] {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'open',
+  path: 'D:\\ERP\\frontend\\.next\\trace'
+}
+ ΓÜá Duplicate page detected. pages\super-admin\dashboard.tsx and pages\super-admin\dashboard\index.tsx resolve to /super-admin/dashboard
+ ΓÜá Duplicate page detected. pages\teacher\attendance.tsx and pages\teacher\attendance\index.tsx resolve to /teacher/attendance
+ ΓÜá Duplicate page detected. pages\super-admin\dashboard.tsx and pages\super-admin\dashboard\index.tsx resolve to /super-admin/dashboard
+ ΓÜá Duplicate page detected. pages\teacher\attendance.tsx and pages\teacher\attendance\index.tsx resolve to /teacher/attendance
+ Γ£ô Ready in 2.6s
