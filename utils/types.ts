@@ -61,9 +61,9 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// ✅ LOGIN RESPONSE (MATCHES BACKEND)
+// ✅ LOGIN RESPONSE (COOKIE-BASED AUTH — token is in HTTP-Only cookie, not in body)
 export interface LoginResponse {
-  access_token: string;
+  message: string;
   user: User;
 }
 

@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { User, LoginCredentials } from '@/utils/types';
 import { authService } from '@/services/auth.service';
 import { isValidRole } from '@/utils/role-config';
-import { STORAGE_KEYS } from '@/utils/constants';
 
 interface AuthContextType {
     user: User | null;
@@ -22,55 +21,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
     const [authenticated, setAuthenticated] = useState(false);
 
-    // Initialize auth state
+    // Initialize auth state by hitting /auth/profile.
+    // The HTTP-Only cookie is automatically sent by the browser, so no token
+    // reading from localStorage is needed. If the profile call succeeds the user
+    // is authenticated; if it returns 401, they are not.
     useEffect(() => {
-        if (typeof window === 'undefined') return;
-
         const initAuth = async () => {
-            const localToken = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-            const sessionToken = sessionStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
-            const token = localToken || sessionToken;
-
-            if (!token) {
-                setLoading(false);
-                setAuthenticated(false);
-                return;
-            }
-
+            // Try to load a cached user object first for instant UI hydration
             try {
-                const localUserStr = localStorage.getItem(STORAGE_KEYS.USER);
-                const sessionUserStr = sessionStorage.getItem(STORAGE_KEYS.USER);
-                const storedUserStr = localUserStr || sessionUserStr;
+                const cachedStr =
+                    (typeof window !== 'undefined' && localStorage.getItem('user')) ||
+                    (typeof window !== 'undefined' && sessionStorage.getItem('user'));
 
-                if (storedUserStr) {
-                    const storedUser = JSON.parse(storedUserStr);
-                    if (storedUser && storedUser.id && isValidRole(storedUser.role)) {
-                        setUser(storedUser);
+                if (cachedStr) {
+                    const cachedUser = JSON.parse(cachedStr);
+                    if (cachedUser?.id && isValidRole(cachedUser.role)) {
+                        setUser(cachedUser);
                         setAuthenticated(true);
-                        setLoading(false);
-                        return;
                     }
                 }
-            } catch (e) {
-                console.warn('[AuthContext] Cache parse error', e);
+            } catch {
+                // ignore parse errors
             }
 
+            // Always verify with the server. The HTTP-Only cookie is sent automatically.
             try {
                 const fetchedUser = await authService.getProfile();
-                if (fetchedUser && fetchedUser.id && isValidRole(fetchedUser.role)) {
-                    const storage = localToken ? localStorage : sessionStorage;
-                    storage.setItem(STORAGE_KEYS.USER, JSON.stringify(fetchedUser));
+                if (fetchedUser?.id && isValidRole(fetchedUser.role)) {
+                    localStorage.setItem('user', JSON.stringify(fetchedUser));
                     setUser(fetchedUser);
                     setAuthenticated(true);
                 } else {
-                    throw new Error('Invalid user');
+                    throw new Error('Invalid user data from server');
                 }
-            } catch (error) {
-                console.error('[AuthContext] Init error:', error);
-                localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-                localStorage.removeItem(STORAGE_KEYS.USER);
-                sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-                sessionStorage.removeItem(STORAGE_KEYS.USER);
+            } catch {
+                // Cookie missing or expired — clear any stale cache and mark as unauthenticated
+                if (typeof window !== 'undefined') {
+                    localStorage.removeItem('user');
+                    sessionStorage.removeItem('user');
+                }
                 setUser(null);
                 setAuthenticated(false);
             } finally {
@@ -83,29 +72,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = useCallback(
         async (credentials: LoginCredentials, rememberMe: boolean = false): Promise<User> => {
+            // Backend validates credentials, returns user, and sets the HTTP-Only cookie
             const response = await authService.login(credentials);
 
-            if (!response || !response.access_token) {
+            if (!response?.user) {
                 throw new Error('Invalid response from server');
             }
 
-            if (!response.user || !isValidRole(response.user.role)) {
+            if (!isValidRole(response.user.role)) {
                 throw new Error('Invalid user data received from server');
             }
 
-            // Clear existing data first
-            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            localStorage.removeItem(STORAGE_KEYS.USER);
-            sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            sessionStorage.removeItem(STORAGE_KEYS.USER);
-
+            // Cache the user profile locally for fast hydration on next load
             const storage = rememberMe ? localStorage : sessionStorage;
 
-            // Save token and user to appropriate storage
-            storage.setItem(STORAGE_KEYS.ACCESS_TOKEN, response.access_token);
-            storage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
+            // Clear any stale data from other storage first
+            localStorage.removeItem('user');
+            sessionStorage.removeItem('user');
 
-            // Update state
+            storage.setItem('user', JSON.stringify(response.user));
+
             setUser(response.user);
             setAuthenticated(true);
 
@@ -116,16 +102,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const logout = useCallback(async () => {
         try {
+            // Calls backend POST /auth/logout which clears the HTTP-Only cookie
             await authService.logout();
         } catch (error) {
             console.error('Logout error:', error);
         } finally {
-            // Always clear all storage
-            localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            localStorage.removeItem(STORAGE_KEYS.USER);
-            sessionStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
-            sessionStorage.removeItem(STORAGE_KEYS.USER);
-
+            // Clear locally cached user profile
+            if (typeof window !== 'undefined') {
+                localStorage.removeItem('user');
+                sessionStorage.removeItem('user');
+            }
             setUser(null);
             setAuthenticated(false);
             router.push('/auth/login');

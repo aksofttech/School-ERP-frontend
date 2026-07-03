@@ -1,21 +1,28 @@
 /**
  * Authentication service
  * Handles all authentication-related API calls
+ * Token is managed server-side via HTTP-Only cookies
  */
 
 import { apiClient } from '@/utils/api-client';
 import { API_ENDPOINTS } from '@/utils/constants';
-import { LoginCredentials, LoginResponse, User } from '@/utils/types';
+import { LoginCredentials, User } from '@/utils/types';
+
+// Shape of the new cookie-based login response
+interface CookieLoginResponse {
+  message: string;
+  user: User;
+}
 
 class AuthService {
   /**
-   * Login user
-   * Backend returns: { access_token: string, user: User }
+   * Login user.
+   * Backend sets the JWT as an HTTP-Only cookie and returns user data only.
    */
-  async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    const response = await apiClient.post<LoginResponse>(
+  async login(credentials: LoginCredentials): Promise<CookieLoginResponse> {
+    const response = await apiClient.post<CookieLoginResponse>(
       API_ENDPOINTS.AUTH.LOGIN,
-      credentials
+      credentials,
     );
     return response;
   }
@@ -45,8 +52,6 @@ class AuthService {
    * Verify OTP
    */
   async verifyOTP(otp: string): Promise<boolean> {
-    // Assuming backend returns { valid: boolean } or similar
-    // Adjust endpoint as necessary, assuming /auth/verify-otp exists or similar
     try {
       await apiClient.post('/auth/verify-otp', { otp });
       return true;
@@ -59,15 +64,18 @@ class AuthService {
    * Change password
    */
   async changePassword(oldPassword: string, newPassword: string): Promise<void> {
-    await apiClient.post(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, { oldPassword, newPassword });
+    await apiClient.post(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, {
+      oldPassword,
+      newPassword,
+    });
   }
 
   /**
-   * Get current user profile
+   * Get current user profile.
+   * Works because the HTTP-Only cookie is automatically sent with the request.
    */
   async getProfile(): Promise<User> {
     const response = await apiClient.get<{ data: User }>(API_ENDPOINTS.AUTH.PROFILE);
-    // Backend might return wrapped or direct, handle both
     return (response as any).data || response;
   }
 
@@ -80,14 +88,19 @@ class AuthService {
   }
 
   /**
-   * Logout - clears localStorage
+   * Logout - calls backend to clear the HTTP-Only cookie.
+   * Also clears any cached user data from localStorage.
    */
-  logout() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('user');
-      sessionStorage.removeItem('access_token');
-      sessionStorage.removeItem('user');
+  async logout(): Promise<void> {
+    try {
+      // Tell the backend to clear the HTTP-Only cookie (only the backend can do this)
+      await apiClient.post('/auth/logout');
+    } finally {
+      // Clear any locally cached user data
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+      }
     }
   }
 }

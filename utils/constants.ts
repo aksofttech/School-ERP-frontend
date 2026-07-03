@@ -54,15 +54,7 @@ export const API_ENDPOINTS = {
   SUPPORT: '/support',
 } as const;
 
-// Cookie names
-export const COOKIE_NAMES = {
-  ACCESS_TOKEN: 'accessToken',
-  REFRESH_TOKEN: 'refreshToken',
-  USER: 'user',
-} as const;
-
-// Storage keys
+// Storage keys (JWT token is now managed as an HTTP-Only cookie by the backend)
 export const STORAGE_KEYS = {
-  USER: 'user',
-  ACCESS_TOKEN: 'access_token',
+  USER: 'user', // Cached user profile for fast UI hydration
 } as const;
