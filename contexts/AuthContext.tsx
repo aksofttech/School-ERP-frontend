@@ -11,6 +11,8 @@ interface AuthContextType {
     login: (credentials: LoginCredentials, rememberMe?: boolean) => Promise<User>;
     logout: () => Promise<void>;
     isAuthenticated: () => boolean;
+    updateUser: (updatedUser: Partial<User>) => void;
+    refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -122,8 +124,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return authenticated && user !== null;
     }, [authenticated, user]);
 
+    const refreshProfile = useCallback(async () => {
+        try {
+            const fetchedUser = await authService.getProfile();
+            if (fetchedUser?.id) {
+                if (typeof window !== 'undefined') {
+                    if (localStorage.getItem('user')) {
+                        localStorage.setItem('user', JSON.stringify(fetchedUser));
+                    } else {
+                        sessionStorage.setItem('user', JSON.stringify(fetchedUser));
+                    }
+                }
+                setUser(fetchedUser);
+            }
+        } catch (error) {
+            console.error('Failed to refresh profile:', error);
+        }
+    }, []);
+
+    const updateUser = useCallback((updatedData: Partial<User>) => {
+        setUser((prev) => {
+            if (!prev) return null;
+            const updated = { ...prev, ...updatedData };
+            if (typeof window !== 'undefined') {
+                if (localStorage.getItem('user')) {
+                    localStorage.setItem('user', JSON.stringify(updated));
+                } else if (sessionStorage.getItem('user')) {
+                    sessionStorage.setItem('user', JSON.stringify(updated));
+                }
+            }
+            return updated;
+        });
+    }, []);
+
     return (
-        <AuthContext.Provider value={{ user, loading, authenticated, login, logout, isAuthenticated: isAuthenticatedCheck }}>
+        <AuthContext.Provider value={{ user, loading, authenticated, login, logout, isAuthenticated: isAuthenticatedCheck, updateUser, refreshProfile }}>
             {children}
         </AuthContext.Provider>
     );

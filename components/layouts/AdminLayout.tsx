@@ -26,6 +26,7 @@ import {
   ShieldCheck,
   MessageSquare,
   BookMarked,
+  Banknote,
   Smartphone,
   Building
 } from 'lucide-react';
@@ -49,7 +50,7 @@ const ADMIN_SECTIONS: NavSection[] = [
     title: 'School',
     items: [
       { label: 'Classes', href: '/admin/classes', icon: Layers },
-      { label: 'Subjects', href: '/admin/subjects', icon: BookMarked },
+      { label: 'Staff Payments', href: '/admin/payroll', icon: Banknote },
       { label: 'Calendar', href: '/admin/academic/calendar', icon: Calendar },
       { label: 'Exams', href: '/admin/exams', icon: Award },
       { label: 'Homework', href: '/admin/homework', icon: ClipboardList },

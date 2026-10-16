@@ -65,7 +65,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
     const isActive = (href: string) => router.pathname.startsWith(href);
 
     return (
-        <div className="min-h-screen bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-200">
+        <div className="h-screen w-full bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-200">
             {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
                 <div
@@ -76,7 +76,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
 
             {/* Sidebar */}
             <aside className={`
-                fixed lg:sticky top-0 left-0 z-50 h-screen w-64 
+                fixed top-0 left-0 z-50 h-screen w-64 shrink-0
                 bg-white dark:bg-surface-dark border-r border-slate-200 dark:border-slate-700
                 transition-transform duration-300 ease-in-out flex flex-col
                 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -106,7 +106,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                                             className={`
                                                 flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-all group
                                                 ${active
-                                                    ? 'bg-primary/10 text-primary dark:text-indigo-400'
+                                                    ? 'bg-primary/10 text-primary dark:text-indigo-400 font-semibold'
                                                     : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary transition-all'
                                                 }
                                             `}
@@ -125,9 +125,9 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                 </div>
 
                 {/* Sidebar Footer - User Profile */}
-                <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+                <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 shrink-0">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden shadow-sm uppercase">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden shadow-sm uppercase shrink-0">
                             {user?.firstName?.charAt(0) || <UserCircle size={24} />}
                         </div>
                         <div className="flex-1 min-w-0">
@@ -136,7 +136,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                         </div>
                         <button
                             onClick={logout}
-                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors shrink-0"
                         >
                             <LogOut size={18} />
                         </button>
@@ -145,9 +145,9 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
             </aside>
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 lg:pl-64 flex flex-col min-w-0 h-full overflow-hidden">
                 {/* Header */}
-                <header className="h-16 flex items-center justify-between px-4 lg:px-8 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm">
+                <header className="h-16 shrink-0 flex items-center justify-between px-4 lg:px-8 bg-white/80 dark:bg-surface-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 z-30 shadow-sm">
                     <div className="flex items-center gap-4 flex-1">
                         <button
                             className="lg:hidden p-2 text-slate-500 hover:text-primary transition-colors"
@@ -236,7 +236,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 overflow-y-auto p-4 lg:p-8 no-scrollbar pb-24 lg:pb-8">
+                <main className="flex-1 overflow-y-auto p-4 lg:p-8 custom-scrollbar pb-24 lg:pb-8">
                     <div className="max-w-7xl mx-auto space-y-8">
                         {children}
                     </div>

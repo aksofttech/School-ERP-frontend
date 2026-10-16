@@ -1,21 +1,27 @@
 import Head from 'next/head';
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout';
 import LicenseManagement from '@/modules/super-admin/license/LicenseManagement';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LicenseManagementPage() {
     return (
-        <SuperAdminLayout>
+        <SuperAdminLayout title="License Management">
             <Head>
-                <title>License Management - EduCore</title>
+                <title>License Management - Vikas ERP</title>
             </Head>
 
-            <div className="flex flex-col gap-1 pb-6">
-                <nav className="flex items-center gap-2 text-sm mb-4 text-slate-500 dark:text-slate-400">
-                    <span className="hover:text-primary transition-colors cursor-pointer">Super Admin</span>
-                    <span className="material-icons-round text-[16px]">chevron_right</span>
-                    <span className="hover:text-primary transition-colors cursor-pointer">Licenses</span>
-                    <span className="material-icons-round text-[16px]">chevron_right</span>
-                    <span className="font-medium text-slate-900 dark:text-white underline decoration-primary decoration-2 underline-offset-4">Asset Explorer</span>
+            <div className="flex flex-col gap-1 pb-4">
+                <nav className="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                    <Link href="/super-admin" className="hover:text-indigo-600 transition-colors">
+                        Super Admin
+                    </Link>
+                    <ChevronRight size={13} className="text-slate-400" />
+                    <span className="text-slate-600 dark:text-slate-300">Licenses</span>
+                    <ChevronRight size={13} className="text-slate-400" />
+                    <span className="font-bold text-indigo-600 dark:text-indigo-400">
+                        Asset Explorer
+                    </span>
                 </nav>
             </div>
 

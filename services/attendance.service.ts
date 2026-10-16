@@ -38,9 +38,14 @@ class AttendanceService {
     return response;
   }
 
+  async getOverview() {
+    const response = await apiClient.get<any>(`${API_ENDPOINTS.ATTENDANCE}/overview`);
+    return response.data || response;
+  }
+
   async getReports(params: any) {
-    const response = await apiClient.get(`${API_ENDPOINTS.ATTENDANCE}/reports`, { params });
-    return response.data!;
+    const response = await apiClient.get<any>(`${API_ENDPOINTS.ATTENDANCE}/reports`, { params });
+    return response.data || response;
   }
 }
 

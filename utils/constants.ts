@@ -40,7 +40,11 @@ export const API_ENDPOINTS = {
   EXAMS: '/exams',
   HOMEWORK: '/homework',
   FEES: '/fees',
+  PAYROLL: '/payroll',
   TRANSPORT: '/transport',
+  HOSTEL: '/hostel',
+  INVENTORY: '/inventory',
+  LIBRARY: '/library',
   COMMUNICATION: {
     NOTICES: '/communication/notices',
     SMS: '/communication/sms',

@@ -24,4 +24,5 @@ export { auditService } from './audit.service';
 export { supportService } from './support.service';
 export { usersService } from './users.service';
 export { parentsService } from './parents.service';
+export { payrollService } from './payroll.service';
 export { superAdminService } from './super-admin.service';

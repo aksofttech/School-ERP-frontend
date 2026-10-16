@@ -1,3 +1,12 @@
-import { default as SubjectsListModule } from '@/modules/admin/academic/subjects/SubjectsList';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-export default SubjectsListModule;
+export default function SubjectsRedirect() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/admin/payroll');
+  }, [router]);
+
+  return null;
+}
