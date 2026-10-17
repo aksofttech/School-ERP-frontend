@@ -56,6 +56,12 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
 
     const isActive = (href: string) => router.pathname.startsWith(href);
 
+    const getProfileRoute = () => {
+        if (user?.role === 'SUPER_ADMIN') return '/super-admin/settings';
+        if (user?.role === 'SCHOOL_ADMIN') return '/admin/settings';
+        return '/profile';
+    };
+
     return (
         <div className="h-screen w-full bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 font-sans flex overflow-hidden transition-colors duration-200">
             {/* Mobile Sidebar Overlay */}
@@ -119,9 +125,9 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                 {/* Sidebar Footer - User Profile */}
                 <div className="p-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 shrink-0">
                     <Link
-                        href={user?.role === 'SUPER_ADMIN' ? '/super-admin/settings' : '/admin/settings'}
+                        href={getProfileRoute()}
                         className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-800/60 transition-all group"
-                        title="Settings"
+                        title="Profile & Settings"
                     >
                         <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden shadow-sm uppercase shrink-0 group-hover:scale-105 transition-transform">
                             {user?.firstName?.charAt(0) || <UserCircle size={22} />}
@@ -176,9 +182,9 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                         <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1 hidden sm:block" />
 
                         <Link
-                            href={user?.role === 'SUPER_ADMIN' ? '/super-admin/settings' : '/admin/settings'}
+                            href={getProfileRoute()}
                             className="flex items-center gap-2.5 p-1.5 pr-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700 group cursor-pointer"
-                            title="Go to Settings"
+                            title="Profile & Settings"
                         >
                             <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden uppercase shadow-sm group-hover:bg-primary group-hover:text-white transition-colors">
                                 {user?.firstName?.charAt(0) || <UserCircle size={18} />}

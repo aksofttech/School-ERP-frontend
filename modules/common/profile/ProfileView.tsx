@@ -464,7 +464,9 @@ export default function ProfileView() {
                                                 value={formData.email}
                                                 className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/60 text-sm font-semibold text-slate-500 dark:text-slate-400 cursor-not-allowed"
                                             />
-                                            <Lock size={14} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400" title="Email is locked for platform integrity" />
+                                            <span title="Email is locked for platform integrity" className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+                                                <Lock size={14} />
+                                            </span>
                                         </div>
                                     </div>
 

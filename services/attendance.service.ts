@@ -22,12 +22,13 @@ class AttendanceService {
   }
 
   async getStudentAttendance(params: any) {
-    const { classId, date } = params;
+    const { classId, date, limit = 100 } = params;
     const response = await apiClient.get<any>(`${API_ENDPOINTS.ATTENDANCE}`, { 
       params: { 
         classId, 
         startDate: date, 
-        endDate: date 
+        endDate: date,
+        limit,
       } 
     });
     return response;
