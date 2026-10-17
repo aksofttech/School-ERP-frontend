@@ -32,7 +32,7 @@ import { useClasses } from '@/hooks/useClasses';
 import { useSubjects } from '@/hooks/useSubjects';
 import Button from '@/components/ui/Button';
 import Skeleton from '@/components/ui/Skeleton';
-import { Badge } from '@/components/ui/Badge';
+import { useRouter } from 'next/router';
 import { toast } from 'react-hot-toast';
 
 const homeworkSchema = z.object({
@@ -54,6 +54,9 @@ const formatDateString = (d: Date) => {
 };
 
 export default function TeacherAssignments() {
+    const router = useRouter();
+    const { classId: queryClassId, homeworkId: queryHomeworkId } = router.query;
+
     // 2-Step Flow: Step 1 = Class & Section Selection, Step 2 = Class Homework Manager
     const [step, setStep] = useState<1 | 2>(1);
 
@@ -126,9 +129,29 @@ export default function TeacherAssignments() {
         fetchAssignments();
     }, []);
 
+    // Handle URL query parameters from dashboard
+    useEffect(() => {
+        if (queryClassId && typeof queryClassId === 'string' && classes.length > 0) {
+            const found = classes.find(c => c.id === queryClassId || c.name === queryClassId);
+            if (found) {
+                setSelectedClassId(found.id);
+                setStep(2);
+            }
+        }
+    }, [queryClassId, classes]);
+
+    useEffect(() => {
+        if (queryHomeworkId && typeof queryHomeworkId === 'string' && assignments.length > 0) {
+            const foundHw = assignments.find(a => a.id === queryHomeworkId);
+            if (foundHw) {
+                setSelectedDetail(foundHw);
+            }
+        }
+    }, [queryHomeworkId, assignments]);
+
     // Pick initial default class once classes are loaded
     useEffect(() => {
-        if (classes.length > 0 && !selectedClassId) {
+        if (classes.length > 0 && !selectedClassId && !queryClassId) {
             // Prefer Class 10th or senior classes
             const preferred =
                 classes.find(c => c.name === 'Class 10th') ||
@@ -138,7 +161,7 @@ export default function TeacherAssignments() {
                 setSelectedClassId(preferred.id);
             }
         }
-    }, [classes, selectedClassId]);
+    }, [classes, selectedClassId, queryClassId]);
 
     // When selected class changes, load sections for it
     useEffect(() => {

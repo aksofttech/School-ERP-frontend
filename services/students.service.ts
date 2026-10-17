@@ -46,7 +46,14 @@ class StudentsService {
    */
   async getByClass(classId: string): Promise<Student[]> {
     const response = await apiClient.get(`${API_ENDPOINTS.STUDENTS}/class/${classId}`);
-    return (response as any).data || response;
+    const data = (response as any)?.data || response;
+    if (data && Array.isArray(data.students)) {
+      return data.students;
+    }
+    if (Array.isArray(data)) {
+      return data;
+    }
+    return (data?.data || []) as Student[];
   }
 
   /**

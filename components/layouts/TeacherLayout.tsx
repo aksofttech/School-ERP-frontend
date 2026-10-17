@@ -17,6 +17,7 @@ import {
   BookMarked,
   Megaphone,
   Trophy,
+  Settings,
 } from 'lucide-react';
 
 interface TeacherLayoutProps {
@@ -38,6 +39,12 @@ const TEACHER_SECTIONS: NavSection[] = [
       { label: 'Assignments', href: '/teacher/assignments', icon: CheckSquare },
       { label: 'Exams', href: '/teacher/exams', icon: Award },
       { label: 'Marks Entry', href: '/teacher/grades', icon: Trophy },
+    ]
+  },
+  {
+    title: 'Account',
+    items: [
+      { label: 'Settings', href: '/teacher/settings', icon: Settings },
     ]
   },
 ];

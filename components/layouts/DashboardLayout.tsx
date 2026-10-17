@@ -59,6 +59,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
     const getProfileRoute = () => {
         if (user?.role === 'SUPER_ADMIN') return '/super-admin/settings';
         if (user?.role === 'SCHOOL_ADMIN') return '/admin/settings';
+        if (user?.role === 'TEACHER') return '/teacher/settings';
         return '/profile';
     };
 

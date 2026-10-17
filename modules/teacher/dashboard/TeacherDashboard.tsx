@@ -90,10 +90,10 @@ export default function TeacherDashboard() {
                             <span className="text-xs text-slate-400 font-medium">• Academic Year 2026-27</span>
                         </div>
                         <h1 className="text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-                            Welcome back, {teacher.name || 'Rajesh Sharma'}
+                            Teacher Dashboard
                         </h1>
                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            Department of Mathematics • Vidya Mandir Senior Secondary School
+                            {teacher.name || 'Rajesh Sharma'} • Department of Mathematics • Vidya Mandir Senior Secondary School
                         </p>
                     </div>
 
@@ -366,35 +366,45 @@ export default function TeacherDashboard() {
                             </div>
 
                             <div className="space-y-3">
-                                {upcomingHomework.map((hw: any, idx: number) => (
-                                    <div
-                                        key={idx}
-                                        className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80 space-y-2 hover:border-primary/30 transition-all"
-                                    >
-                                        <div className="flex items-start justify-between gap-2">
-                                            <h4 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1">
-                                                {hw.title}
-                                            </h4>
-                                            <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md shrink-0">
-                                                {hw.class}
-                                            </span>
-                                        </div>
+                                {upcomingHomework.map((hw: any, idx: number) => {
+                                    const targetHref = hw.classId
+                                        ? `/teacher/assignments?classId=${hw.classId}&homeworkId=${hw.id}`
+                                        : `/teacher/assignments`;
 
-                                        {hw.description && (
-                                            <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
-                                                {hw.description}
-                                            </p>
-                                        )}
+                                    return (
+                                        <Link
+                                            key={idx}
+                                            href={targetHref}
+                                            className="group block p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800/80 space-y-2 hover:border-primary/50 hover:bg-white dark:hover:bg-slate-800/80 hover:shadow-md transition-all cursor-pointer"
+                                        >
+                                            <div className="flex items-start justify-between gap-2">
+                                                <h4 className="text-xs font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors">
+                                                    {hw.title}
+                                                </h4>
+                                                <span className="text-[10px] font-bold text-primary bg-primary/10 group-hover:bg-primary group-hover:text-white px-2 py-0.5 rounded-md shrink-0 transition-colors">
+                                                    {hw.class}
+                                                </span>
+                                            </div>
 
-                                        <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400 pt-1">
-                                            <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
-                                                <Clock size={12} />
-                                                Due: {new Date(hw.dueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
-                                            </span>
-                                            <span>Subject: {hw.subject}</span>
-                                        </div>
-                                    </div>
-                                ))}
+                                            {hw.description && (
+                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                                    {hw.description}
+                                                </p>
+                                            )}
+
+                                            <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400 pt-1 border-t border-slate-100 dark:border-slate-800/60">
+                                                <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-bold">
+                                                    <Clock size={12} />
+                                                    Due: {new Date(hw.dueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                                                </span>
+                                                <span className="inline-flex items-center gap-1 text-primary font-bold group-hover:translate-x-0.5 transition-transform">
+                                                    <span>View Details</span>
+                                                    <ArrowRight size={11} />
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    );
+                                })}
 
                                 {upcomingHomework.length === 0 && (
                                     <div className="p-6 text-center text-slate-400 italic text-xs">
