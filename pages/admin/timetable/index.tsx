@@ -3,7 +3,7 @@ import TimetableOrchestration from '@/modules/admin/academic/timetable/Timetable
 
 export default function TimetablePage() {
     return (
-        <AdminLayout title="Academic Orchestration">
+        <AdminLayout title="Staff Timetable">
             <TimetableOrchestration />
         </AdminLayout>
     );

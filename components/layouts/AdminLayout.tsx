@@ -53,7 +53,6 @@ const ADMIN_SECTIONS: NavSection[] = [
       { label: 'Staff Payments', href: '/admin/payroll', icon: Banknote },
       { label: 'Calendar', href: '/admin/academic/calendar', icon: Calendar },
       { label: 'Exams', href: '/admin/exams', icon: Award },
-      { label: 'Homework', href: '/admin/homework', icon: ClipboardList },
       { label: 'Timetable', href: '/admin/timetable', icon: Calendar },
     ]
   },
@@ -73,8 +72,7 @@ const ADMIN_SECTIONS: NavSection[] = [
   {
     title: 'Settings',
     items: [
-      { label: 'Activity Logs', href: '/admin/audit', icon: Database },
-      { label: 'General Settings', href: '/admin/settings', icon: Settings },
+      { label: 'Settings', href: '/admin/settings', icon: Settings },
     ]
   }
 ];

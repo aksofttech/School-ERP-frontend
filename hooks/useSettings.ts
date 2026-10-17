@@ -21,18 +21,18 @@ export const useSettings = () => {
         } catch (err: any) {
             const message = err.message || 'Failed to fetch settings';
             setError(message);
-            // Fallback for demo
             setSettings({
-                institutionName: 'EduCore International',
-                address: '123 Academic Blvd, Tech City',
-                contactEmail: 'admin@educore.inst',
-                phone: '+1 (555) 123-4567',
-                accreditationNo: 'EDU-2024-X99',
-                currency: 'USD'
+                institutionName: 'Vidya Mandir Senior Secondary School',
+                address: 'Plot 42, Knowledge Park, Mansarovar, Jaipur, Rajasthan',
+                contactEmail: 'contact@vidyamandir.edu.in',
+                phone: '0141-2789100',
+                accreditationNo: 'CBSE-AFF-2024-RJ092',
+                currency: 'INR',
+                schoolCode: 'VMSSS-JPR',
             });
             setAcademicYears([
-                { id: '1', name: '2023-24', startDate: '2023-04-01', endDate: '2024-03-31', isActive: true },
-                { id: '2', name: '2024-25', startDate: '2024-04-01', endDate: '2025-03-31', isActive: false }
+                { id: '1', name: '2026-2027', startDate: '2026-04-01', endDate: '2027-03-31', isActive: true },
+                { id: '2', name: '2025-2026', startDate: '2025-04-01', endDate: '2026-03-31', isActive: false },
             ]);
         } finally {
             setLoading(false);

@@ -3,6 +3,7 @@ import AuthGuard from '@/components/guards/AuthGuard';
 import RoleGuard from '@/components/guards/RoleGuard';
 import AdminLayout from '@/components/layouts/AdminLayout';
 import { UserRole } from '@/utils/types';
+import { USER_ROLES } from '@/utils/role-config';
 import { useFees } from '@/hooks/useFees';
 import { format } from 'date-fns';
 import { 
@@ -49,7 +50,7 @@ export default function FeeCollection() {
 
   return (
     <AuthGuard>
-      <RoleGuard allowedRoles={[UserRole.SCHOOL_ADMIN]}>
+      <RoleGuard allowedRoles={[USER_ROLES.SCHOOL_ADMIN, USER_ROLES.SUPER_ADMIN]}>
         <div className="flex flex-col gap-8 animate-in fade-in duration-500 max-w-7xl mx-auto pb-12">
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-slate-900 p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">

@@ -8,7 +8,6 @@ import {
     Menu, 
     X, 
     Search, 
-    LogOut, 
     ChevronRight, 
     Moon, 
     Sun, 
@@ -19,13 +18,6 @@ import {
     User 
 } from 'lucide-react';
 import { NotificationBell } from '@/components/ui/NotificationBell';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-    DropdownMenuSeparator
-} from '@/components/ui/DropdownMenu';
 
 export interface NavItem {
     label: string;
@@ -125,22 +117,20 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
                 </div>
 
                 {/* Sidebar Footer - User Profile */}
-                <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 shrink-0">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden shadow-sm uppercase shrink-0">
-                            {user?.firstName?.charAt(0) || <UserCircle size={24} />}
+                <div className="p-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 shrink-0">
+                    <Link
+                        href={user?.role === 'SUPER_ADMIN' ? '/super-admin/settings' : '/admin/settings'}
+                        className="flex items-center gap-3 p-1.5 rounded-xl hover:bg-slate-200/50 dark:hover:bg-slate-800/60 transition-all group"
+                        title="Settings"
+                    >
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden shadow-sm uppercase shrink-0 group-hover:scale-105 transition-transform">
+                            {user?.firstName?.charAt(0) || <UserCircle size={22} />}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{user?.firstName} {user?.lastName}</p>
-                            <p className="text-[10px] uppercase tracking-wide text-slate-400 dark:text-slate-500 font-bold truncate">{role}</p>
+                            <p className="text-xs font-bold text-slate-900 dark:text-white truncate group-hover:text-primary transition-colors">{user?.firstName} {user?.lastName}</p>
+                            <p className="text-[10px] uppercase tracking-wide text-slate-400 dark:text-slate-500 font-bold truncate">{role?.replace('_', ' ')}</p>
                         </div>
-                        <button
-                            onClick={logout}
-                            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors shrink-0"
-                        >
-                            <LogOut size={18} />
-                        </button>
-                    </div>
+                    </Link>
                 </div>
             </aside>
 
@@ -185,53 +175,19 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
 
                         <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1 hidden sm:block" />
 
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <button className="flex items-center gap-2 p-1.5 pr-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-                                    <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden uppercase shadow-sm">
-                                        {user?.firstName?.charAt(0) || <UserCircle size={18} />}
-                                    </div>
-                                    <div className="hidden lg:block text-left">
-                                        <p className="text-[10px] font-black text-slate-900 dark:text-white uppercase leading-none tracking-wider mb-0.5">{user?.firstName}</p>
-                                        <p className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase leading-none tracking-tighter">{role?.replace('_', ' ')}</p>
-                                    </div>
-                                </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-56 p-2 rounded-2xl border-slate-200 dark:border-slate-800 shadow-2xl">
-                                <div className="px-4 py-3 mb-2 bg-slate-50 dark:bg-slate-900 rounded-xl space-y-1">
-                                    <p className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">{user?.firstName} {user?.lastName}</p>
-                                    <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{role?.replace('_', ' ')}</p>
-                                    <div className="pt-2 space-y-1 border-t border-slate-200/50 dark:border-slate-700/50 mt-2">
-                                        <p className="text-[8px] font-bold text-slate-500 lowercase tracking-wide flex items-center gap-2">
-                                            <span className="w-1 h-1 rounded-full bg-primary" />
-                                            {user?.email}
-                                        </p>
-                                        {user?.phone && (
-                                            <p className="text-[8px] font-bold text-slate-500 lowercase tracking-wide flex items-center gap-2">
-                                                <span className="w-1 h-1 rounded-full bg-emerald-500" />
-                                                {user?.phone}
-                                            </p>
-                                        )}
-                                    </div>
-                                </div>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem asChild>
-                                    <Link href="/profile" className="flex items-center gap-3 p-3 rounded-xl cursor-pointer">
-                                        <User size={16} className="text-primary" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest">My Profile</span>
-                                    </Link>
-                                </DropdownMenuItem>
-
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem 
-                                    onClick={logout}
-                                    className="flex items-center gap-3 p-3 rounded-xl cursor-pointer text-rose-500 focus:text-rose-600 focus:bg-rose-50 dark:focus:bg-rose-500/10"
-                                >
-                                    <LogOut size={16} />
-                                    <span className="text-[10px] font-black uppercase tracking-widest">Sign Out</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Link
+                            href={user?.role === 'SUPER_ADMIN' ? '/super-admin/settings' : '/admin/settings'}
+                            className="flex items-center gap-2.5 p-1.5 pr-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700 group cursor-pointer"
+                            title="Go to Settings"
+                        >
+                            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold overflow-hidden uppercase shadow-sm group-hover:bg-primary group-hover:text-white transition-colors">
+                                {user?.firstName?.charAt(0) || <UserCircle size={18} />}
+                            </div>
+                            <div className="hidden lg:block text-left">
+                                <p className="text-[10px] font-black text-slate-900 dark:text-white uppercase leading-none tracking-wider mb-0.5 group-hover:text-primary transition-colors">{user?.firstName}</p>
+                                <p className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase leading-none tracking-tighter">{role?.replace('_', ' ')}</p>
+                            </div>
+                        </Link>
                     </div>
                 </header>
 
