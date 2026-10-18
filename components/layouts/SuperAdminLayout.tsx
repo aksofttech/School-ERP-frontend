@@ -18,6 +18,7 @@ import {
 
 interface SuperAdminLayoutProps {
   children: ReactNode;
+  title?: string;
 }
 
 const SUPER_ADMIN_SECTIONS: NavSection[] = [
@@ -46,7 +47,7 @@ const SUPER_ADMIN_SECTIONS: NavSection[] = [
   }
 ];
 
-function SuperAdminLayoutContent({ children }: SuperAdminLayoutProps) {
+function SuperAdminLayoutContent({ children, title }: SuperAdminLayoutProps) {
   return (
     <DashboardLayout sections={SUPER_ADMIN_SECTIONS} role="Super Admin">
       {children}
@@ -54,11 +55,11 @@ function SuperAdminLayoutContent({ children }: SuperAdminLayoutProps) {
   );
 }
 
-export default function SuperAdminLayout({ children }: SuperAdminLayoutProps) {
+export default function SuperAdminLayout({ children, title }: SuperAdminLayoutProps) {
   return (
     <AuthGuard>
       <RoleGuard allowedRoles={[USER_ROLES.SUPER_ADMIN]}>
-        <SuperAdminLayoutContent>{children}</SuperAdminLayoutContent>
+        <SuperAdminLayoutContent title={title}>{children}</SuperAdminLayoutContent>
       </RoleGuard>
     </AuthGuard>
   );

@@ -22,16 +22,32 @@ class AttendanceService {
   }
 
   async getStudentAttendance(params: any) {
-    const { classId, date, limit = 100 } = params;
-    const response = await apiClient.get<any>(`${API_ENDPOINTS.ATTENDANCE}`, { 
-      params: { 
-        classId, 
-        startDate: date, 
-        endDate: date,
+    let queryParams: any = {};
+    if (typeof params === 'string') {
+      queryParams = { studentId: params, limit: 100 };
+    } else if (params && typeof params === 'object') {
+      const { studentId, classId, date, startDate, endDate, limit = 100, page = 1 } = params;
+      queryParams = {
+        studentId,
+        classId,
+        startDate: startDate || date,
+        endDate: endDate || date,
         limit,
-      } 
+        page,
+      };
+      Object.keys(queryParams).forEach(key => queryParams[key] === undefined && delete queryParams[key]);
+    }
+    const response = await apiClient.get<any>(`${API_ENDPOINTS.ATTENDANCE}`, { 
+      params: queryParams 
     });
     return response;
+  }
+
+  async getMonthlyReport(studentId: string, month: string) {
+    const response = await apiClient.get<any>(`${API_ENDPOINTS.ATTENDANCE}/monthly-report`, {
+      params: { studentId, month }
+    });
+    return response.data || response;
   }
 
   async getTeacherAttendance(params: any) {

@@ -72,9 +72,17 @@ class ExamsService {
   }
 
   /**
+   * Get all exam results for a student
+   */
+  async getStudentResults(studentId: string): Promise<any> {
+    const response = await apiClient.get(`/results/student/${studentId}`);
+    return (response as any).data || response;
+  }
+
+  /**
    * Generate report card for a student
    */
-  async generateReportCard(studentId: string, academicYearId: string): Promise<any> {
+  async generateReportCard(studentId: string, academicYearId?: string): Promise<any> {
     const response = await apiClient.get(`/results/student/${studentId}`, { params: { academicYearId } });
     return (response as any).data || response;
   }

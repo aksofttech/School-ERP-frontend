@@ -76,6 +76,14 @@ class FeesService {
     const response = await apiClient.get(`${API_ENDPOINTS.FEES}/structures`);
     return (response as any).data || response;
   }
+
+  /**
+   * Get student fee history
+   */
+  async getStudentFeeHistory(studentId: string): Promise<any> {
+    const response = await apiClient.get<any>(`${API_ENDPOINTS.FEES}/student/${studentId}/history`);
+    return (response as any).data || response;
+  }
 }
 
 export const feesService = new FeesService();

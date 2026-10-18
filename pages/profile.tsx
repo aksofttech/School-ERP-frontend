@@ -6,6 +6,7 @@ import TeacherLayout from '@/components/layouts/TeacherLayout';
 import StudentLayout from '@/components/layouts/StudentLayout';
 import ParentLayout from '@/components/layouts/ParentLayout';
 import SuperAdminLayout from '@/components/layouts/SuperAdminLayout';
+import ParentSettings from '@/modules/parent/settings/ParentSettings';
 
 export default function ProfilePage() {
     const { user, authenticated, loading } = useAuth();
@@ -41,7 +42,7 @@ export default function ProfilePage() {
         case 'STUDENT':
             return <StudentLayout>{renderContent()}</StudentLayout>;
         case 'PARENT':
-            return <ParentLayout>{renderContent()}</ParentLayout>;
+            return <ParentLayout><ParentSettings /></ParentLayout>;
         default:
             return <div className="p-8">{renderContent()}</div>;
     }

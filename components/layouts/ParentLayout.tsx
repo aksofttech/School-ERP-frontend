@@ -20,7 +20,8 @@ import {
   Clock,
   ClipboardList,
   TrendingUp,
-  CheckCircle2
+  CheckCircle2,
+  Settings
 } from 'lucide-react';
 
 interface ParentLayoutProps {
@@ -41,6 +42,12 @@ const PARENT_SECTIONS: NavSection[] = [
     items: [
       { label: 'Fees & Payments', href: '/parent/fees', icon: CreditCard },
       { label: 'Announcements', href: '/parent/messages', icon: MessageSquare },
+    ]
+  },
+  {
+    title: 'Preferences',
+    items: [
+      { label: 'Settings', href: '/parent/settings', icon: Settings },
     ]
   }
 ];

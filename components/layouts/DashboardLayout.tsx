@@ -60,6 +60,7 @@ export default function DashboardLayout({ children, sections, role, headerExtra 
         if (user?.role === 'SUPER_ADMIN') return '/super-admin/settings';
         if (user?.role === 'SCHOOL_ADMIN') return '/admin/settings';
         if (user?.role === 'TEACHER') return '/teacher/settings';
+        if (user?.role === 'PARENT') return '/parent/settings';
         return '/profile';
     };
 
